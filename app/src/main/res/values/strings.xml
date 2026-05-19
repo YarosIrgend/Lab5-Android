@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Accelerometer</string>
+    <string name="title">Моніторинг Акселерометра</string>
+    <string name="data_title">Значення по Х, Y та Z</string>
+</resources>
