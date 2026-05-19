@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var accelerometerSensor: Sensor? = null
     private lateinit var tvAccelerometerValues: TextView
+    private lateinit var slopeText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         tvAccelerometerValues = findViewById(R.id.tvAccelerometerValues)
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        slopeText = findViewById(R.id.slopeText)
 
         if (accelerometerSensor == null) {
             tvAccelerometerValues.text = "Акселерометр відсутній на цьому пристрої"
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 val z = event.values[2]
 
                 tvAccelerometerValues.text = String.format("X: %.1f\nY: %.1f\nZ: %.1f", x, y, z)
+                slopeText.text = slopeText(x, y, z)
             }
         }
     }
@@ -55,5 +58,30 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
+    }
+
+    // текстова підказка для різноманітності та цікавості)
+    fun slopeText(x: Float, y: Float, z: Float): String {
+        var text = ""
+
+        if (x <= -4) {
+            text += "Нахилено вправо\n"
+        } else if (x >= 4) {
+            text += "Нахилено вліво\n"
+        }
+
+        if (y <= -4) {
+            text += "Шапкою вниз\n"
+        } else if (y >= 4) {
+            text += "Шапкою вгору\n"
+        }
+
+        if (z <= -7) {
+            text += "Екраном донизу"
+        } else if (z >= 7) {
+            text += "Екраном догори"
+        }
+
+        return text
     }
 }
